@@ -79,16 +79,26 @@ def choose_test(event):
     
 def add_noise(test_data):
     if(test_data==None):        
-        messagebox.showwarning("Warning","請先從右方選擇測試資料")
+        messagebox.showwarning("Warning","請先從左方選擇測試資料")
     else:
         for i in np.random.randint(0, test_col*test_row, random.randint(3, 10)): #產生隨機幾個噪點
             test_data[i] = 0 if test_data[i]==1 else 1 #0 1 互換
             
         create_grid(test_canvas, test_col, test_row, test_data, False)
                 
-            
-            
+def learning():
+    if(data_combobox.current()==0):
+        W = np.zeros((108, 108))
+        bias = np.zeros(108)
+        train_data = np.array(basic_word[0])
+        for i in train_data:
+            W += i.reshape(-1,1).dot(i.reshape(1,-1))
+        W -= np.diag(np.diag(W)) #對角線取0
+    elif(data_combobox.current()==1):
+        bonus_word[0]  
+        
 def GUI():
+    global test_canvas, data_combobox
     plt_basic_train = tk.Frame(window)
     plt_basic_train.grid(row=0, column=0)
     plt_basic_test = tk.Frame(window)
@@ -129,17 +139,15 @@ def GUI():
     data_combobox = ttk.Combobox(action_bar, value=["Basic_Training","Bonus_Training"], state="readonly", width=15) #readonly為只可讀狀態
     data_combobox.grid(row=1, column=0, sticky=tk.W)
     data_combobox.current(0) #預設Combobox為index0
-    btn = tk.Button(action_bar, text='開始訓練')
+    btn = tk.Button(action_bar, text='訓練', command=learning)
     btn.grid(row=2, sticky=tk.E+tk.W, pady=10)
     
     tk.Label(action_bar, font=("微軟正黑體", 12, "bold"), text="選擇測試資料").grid(row=3, column=0)
-    global test_canvas
     test_canvas = tk.Canvas(action_bar, height=85, width=75)
     test_canvas.grid(row=4, column=0)
-    btn1 = tk.Button(action_bar, text='加入雜訊')
+    btn1 = tk.Button(action_bar, text='加入雜訊', command=lambda: add_noise(test_data))
     btn1.grid(row=5, sticky=tk.E+tk.W, pady=5)
-    btn1.configure(command=lambda: add_noise(test_data))
-    btn2 = tk.Button(action_bar, text='開始驗證')
+    btn2 = tk.Button(action_bar, text='驗證')
     btn2.grid(row=6, sticky=tk.E+tk.W, pady=5)
     tk.Label(action_bar, font=("微軟正黑體", 12, "bold"), text="驗證結果").grid(row=7, column=0)
     val_canvas = tk.Canvas(action_bar, height=85, width=75)
@@ -147,6 +155,7 @@ def GUI():
 
 basic_word = []
 bonus_word = []
+data_combobox = None
 test_canvas = None
 test_data = None
 test_row = 0
