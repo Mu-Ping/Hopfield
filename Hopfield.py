@@ -5,21 +5,22 @@ Created on Sat Dec 12 22:53:56 2020
 """
 import os
 import tkinter as tk
+import numpy as np
+import random
 from tkinter import ttk
+from tkinter import messagebox
 
-
-def create_grid(c, col, row, file=None, color=True): #https://www.coder.work/article/4933449
-    zeor_color= '#D0D0D0' if color else "white"
-    one_color= '#9D9D9D'  if color else "black"
-
+def create_grid(c, col, row, data=None, color=True): #https://www.coder.work/article/4933449
+    zeor_color = '#D0D0D0' if color else "white"
+    one_color = '#9D9D9D'  if color else "black"
+    file = data.copy() #對傳入的陣列做修改會更改到原本的資料，因此需要copy
     c.delete('all')
-    file = list(file)
     for y in range(row):
         for x in range(col):
             pixel = file.pop(0)
-            if(pixel=="0"):
+            if(pixel==0):
                 c.create_rectangle((7*x+2, 7*y+2, 7*x+9, 7*y+9), fill = zeor_color) #pixel起始x=2 ；y=2
-            elif(pixel=="1"):
+            elif(pixel==1):
                 c.create_rectangle((7*x+2, 7*y+2, 7*x+9, 7*y+9), fill = one_color)
                 
 def focus(event):
@@ -34,42 +35,59 @@ def unfocus(event):
             event.widget.itemconfig(i, fill='#9D9D9D')
         elif(event.widget.itemcget(i ,'fill')=='white'):
             event.widget.itemconfig(i, fill='#D0D0D0')    
+            
 def readdata():           
     basic=["Basic_Training.txt", "Basic_Testing.txt"]
     bonus=["Bonus_Training.txt", "Bonus_Testing.txt"]
-    data_format = [(basic, 12, basic_word),(bonus, 10, bonus_word)]
-    for data in data_format:
-        for i in data[0]:
-            with open(os.getcwd()+'/Hopfield_dataset/'+ i, 'r', encoding='UTF-8') as file:
-                word=[]
-                pixel=""
+    data_format_tuple = [(basic, 12, basic_word),(bonus, 10, bonus_word)]
+    for data_format in data_format_tuple:
+        for file_name in data_format[0]:
+            with open(os.getcwd()+'/Hopfield_dataset/'+ file_name, 'r', encoding='UTF-8') as file:
+                eachfile_data=[]
+                eachdata=""
                 row=0
                 for j in file.readlines():
-                    if(row==data[1]):
-                        word.append(pixel)
-                        pixel=""
+                    if(row==data_format[1]): #取出一個字後參數重設定
+                        eachfile_data.append([int(i) for i in eachdata])
+                        eachdata=""
                         row=0
-                        continue
-                    pixel+=j.replace(" ","0").replace("\n","")
-                    row+=1
-            data[2].append(word)
+                    else:
+                        eachdata+=j.replace(" ","0").replace("\n","")
+                        row+=1
+            data_format[2].append(eachfile_data)
+# basic_word[0] Basic_Training、basic_word[1] Basic_Testing  
+# bonus_word[0] Bonus_Training、bonus_word[1] Bonus_Testing
 def choose_test(event):
-    file=""
+    global test_data, test_row, test_col
+    test_data = []
+    test_len = 0
+    
     for i in range(109):
        if(event.widget.itemcget(i ,'fill')=='black'):  #取得舊有屬性
-           file+='1'
+           test_data.append(1)
        elif(event.widget.itemcget(i ,'fill')=='white'):
-           file+='0' 
-
-    if(len(file)%9==0): #反推canvas大小。也可以透過更改Canvas原始碼將資訊存進物件
-        row=12
-        col=9
+           test_data.append(0)
+    
+    if(len(test_data)%9==0): #反推canvas大小。也可以透過更改Canvas原始碼將資訊存進物件
+        test_row = 12
+        test_col = 9
     else:
-        row=10
-        col=10
-
-    create_grid(test_data, col, row, file, False)
-          
+        test_row = 10
+        test_col = 10
+        
+    create_grid(test_canvas, test_col, test_row, test_data, False)
+    
+def add_noise(test_data):
+    if(test_data==None):        
+        messagebox.showwarning("Warning","請先從右方選擇測試資料")
+    else:
+        for i in np.random.randint(0, test_col*test_row, random.randint(3, 10)): #產生隨機幾個噪點
+            test_data[i] = 0 if test_data[i]==1 else 1 #0 1 互換
+            
+        create_grid(test_canvas, test_col, test_row, test_data, False)
+                
+            
+            
 def GUI():
     plt_basic_train = tk.Frame(window)
     plt_basic_train.grid(row=0, column=0)
@@ -106,7 +124,7 @@ def GUI():
             c.bind("<Button-1>", choose_test)
 #--------------------------------------------------
     action_bar = tk.Frame(window)
-    action_bar.grid(row=0, column=2, rowspan=2, padx=25)
+    action_bar.grid(row=0, column=2, rowspan=3, padx=25)
     tk.Label(action_bar, font=("微軟正黑體", 12, "bold"), text="選擇訓練資料集").grid(row=0, column=0)
     data_combobox = ttk.Combobox(action_bar, value=["Basic_Training","Bonus_Training"], state="readonly", width=15) #readonly為只可讀狀態
     data_combobox.grid(row=1, column=0, sticky=tk.W)
@@ -115,13 +133,25 @@ def GUI():
     btn.grid(row=2, sticky=tk.E+tk.W, pady=10)
     
     tk.Label(action_bar, font=("微軟正黑體", 12, "bold"), text="選擇測試資料").grid(row=3, column=0)
-    global test_data
-    test_data = tk.Canvas(action_bar, height=85, width=75)
-    test_data.grid(row=4, column=0)
+    global test_canvas
+    test_canvas = tk.Canvas(action_bar, height=85, width=75)
+    test_canvas.grid(row=4, column=0)
+    btn1 = tk.Button(action_bar, text='加入雜訊')
+    btn1.grid(row=5, sticky=tk.E+tk.W, pady=5)
+    btn1.configure(command=lambda: add_noise(test_data))
+    btn2 = tk.Button(action_bar, text='開始驗證')
+    btn2.grid(row=6, sticky=tk.E+tk.W, pady=5)
+    tk.Label(action_bar, font=("微軟正黑體", 12, "bold"), text="驗證結果").grid(row=7, column=0)
+    val_canvas = tk.Canvas(action_bar, height=85, width=75)
+    val_canvas.grid(row=8, column=0)
 
-basic_word=[]
-bonus_word=[]
-test_data=None
+basic_word = []
+bonus_word = []
+test_canvas = None
+test_data = None
+test_row = 0
+test_col = 0
+
 window = tk.Tk()
 window.geometry("720x550")
 window.resizable(False, False)
