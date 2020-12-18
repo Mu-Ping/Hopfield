@@ -81,40 +81,50 @@ def add_noise(test_data):
     if(test_data==None):        
         messagebox.showwarning("Warning","請先從左方選擇測試資料")
     else:
-        for i in np.random.randint(0, test_col*test_row, random.randint(3, 10)): #產生隨機幾個噪點
+        for i in np.random.randint(0, test_col*test_row, random.randint(3, 5)): #產生隨機幾個噪點
             test_data[i] = -1 if test_data[i]==1 else 1 #-1 1 互換
             
         create_grid(test_canvas, test_col, test_row, test_data, False)
                 
 def learning():
-    global W, B
+    global W, B, binded_canvas
     if(data_combobox.current()==0):
         d = 108
-        dataset = basic_word[0]
-        bind_canvas = basic_canvas
-        unbind_canvas = bonus_canvas
+        dataset = basic_word[0] 
         infor = "Basic完成訓練"
+        for i in binded_canvas: 
+            i.unbind("<Enter>")
+            i.unbind("<Leave>")
+            i.unbind("<Button-1>")
+        binded_canvas = []
+        for i in basic_canvas:
+            for c in i:
+                binded_canvas.append(c)
+                c.bind("<Enter>", focus)
+                c.bind("<Leave>", unfocus)
+                c.bind("<Button-1>", choose_test)
+
     elif(data_combobox.current()==1):
         d = 100
-        dataset = bonus_word[0][0:4]
-        bind_canvas = bonus_canvas
-        unbind_canvas = basic_canvas
-        infor = "Bonus完成訓練"
-        
-    learned_data.set(infor)    
-    for c in bind_canvas: 
-        c.bind("<Enter>", focus)
-        c.bind("<Leave>", unfocus)
-        c.bind("<Button-1>", choose_test)
-    for c in unbind_canvas: 
-        c.unbind("<Enter>")
-        c.unbind("<Leave>")
-        c.unbind("<Button-1>") 
-        
+        dataset = bonus_word[0][(bonus_combobox.current()*3): (3+bonus_combobox.current()*3)]
+        infor = "Bonus-"+str(bonus_combobox.current()+1)+"完成訓練"
+        for i in binded_canvas: 
+            i.unbind("<Enter>")
+            i.unbind("<Leave>")
+            i.unbind("<Button-1>") 
+        binded_canvas = []
+        for i in bonus_canvas:
+            for c in i[(bonus_combobox.current()*3): (3+bonus_combobox.current()*3)]:
+                binded_canvas.append(c)
+                c.bind("<Enter>", focus)
+                c.bind("<Leave>", unfocus)
+                c.bind("<Button-1>", choose_test)
+    
+    learned_data.set(infor)
+    
     W = np.zeros((d, d))
     B = np.zeros((d,1))
     train_data = np.array(dataset)
-    
     for i in train_data:
         W += i.reshape(-1,1).dot(i.reshape(1,-1))
     W -= np.diag(np.diag(W)) #對角線取0
@@ -123,8 +133,8 @@ def learning():
         
 def associate():
     iteration_n = np.array(test_data).reshape(-1,1)
-    iternum = 0
-    while(1 and iternum<=100):
+    iternum = 0 #避免不收斂
+    while(1):
         iteration_n1 = W.dot(iteration_n)-B
         for i in range(len(iteration_n1)):
             if(iteration_n1[i]>0):
@@ -133,16 +143,20 @@ def associate():
                 iteration_n1[i]=-1
             else:
                 iteration_n1[i]=iteration_n[i]
-                
-
+            
         if((iteration_n1==iteration_n).all()):
             break
         iteration_n = iteration_n1
-        iternum+=1
     create_grid(val_canvas, test_col, test_row, list(iteration_n1), False)
     
 def GUI():
-    global test_canvas, val_canvas, data_combobox
+    global test_canvas, val_canvas, data_combobox, bonus_combobox
+    def state_change(event):
+        if(event.widget.current()==0):
+            bonus_combobox["state"] = tk.DISABLED
+        elif(event.widget.current()==1):
+            bonus_combobox["state"] = "readonly"
+            
     plt_basic_train = tk.Frame(window)
     plt_basic_train.grid(row=0, column=0)
     plt_basic_test = tk.Frame(window)
@@ -150,13 +164,14 @@ def GUI():
     plt_basic = [plt_basic_train, plt_basic_test]
     tk.Label(plt_basic_train, font=("微軟正黑體", 12, "bold"), text="Basic_Training").grid(row=0, column=0, columnspan=3)
     tk.Label(plt_basic_test, font=("微軟正黑體", 12, "bold"), text="Basic_Testing").grid(row=0, column=0, columnspan=3)
-
     for i in range(2):
+        temp = []
         for j in range(3):
             c = tk.Canvas(plt_basic[i], height=85, width=75)
             c.grid(row=1,column=j)
             create_grid(c, 9, 12, basic_word[i][j]) #Basic資料集為9x12
-            basic_canvas.append(c)
+            temp.append(c)
+        basic_canvas.append(temp)
 
 #--------------------------------------------------
     plt_bonus_train = tk.Frame(window)
@@ -168,23 +183,34 @@ def GUI():
     tk.Label(plt_bonus_test, font=("微軟正黑體", 12, "bold"), text="Bonus_Testing").grid(row=0, column=0, columnspan=3)
     for i in range(2):
         rowindex=0
+        index = 0
+        temp = []
         for j in range(15):
-            if(j%3==0): rowindex+=1
+            if(j%3==0): 
+                index+=1
+                tk.Label(plt_bonus[i], font=("微軟正黑體", 10, "bold"), text="Bonus-"+str(index)).grid(row=rowindex+1, column=0, columnspan=3)
+                rowindex+=2
             c = tk.Canvas(plt_bonus[i], height=75, width=75)
             c.grid(row=rowindex, column=j%3)
             create_grid(c, 10, 10, bonus_word[i][j]) #Bonus資料集為10x10
-            bonus_canvas.append(c)
+            temp.append(c)
+        bonus_canvas.append(temp)
 
 #--------------------------------------------------
     action_bar_1 = tk.Frame(window)
     action_bar_1.grid(row=0, column=2, padx=25)
-    tk.Label(action_bar_1, font=("微軟正黑體", 12, "bold"), text="選擇訓練資料集").grid(row=0, column=0)
+    tk.Label(action_bar_1, font=("微軟正黑體", 12, "bold"), text="選擇訓練資料集").grid(row=0, column=0, pady=10)
     data_combobox = ttk.Combobox(action_bar_1, value=["Basic_Training","Bonus_Training"], state="readonly", width=15) #readonly為只可讀狀態
     data_combobox.grid(row=1, column=0, sticky=tk.W)
     data_combobox.current(0) #預設Combobox為index0
+    data_combobox.bind("<<ComboboxSelected>>", state_change)
+    bonus_combobox = ttk.Combobox(action_bar_1, value=["Bonus-1", "Bonus-2", "Bonus-3", "Bonus-4", "Bonus-5"], state="readonly", width=15) #readonly為只可讀狀態
+    bonus_combobox.grid(row=2, column=0, sticky=tk.W, pady=5)
+    bonus_combobox.current(0) #預設Combobox為index0
+    bonus_combobox["state"] = tk.DISABLED
     btn = tk.Button(action_bar_1, text='訓練', command=learning)
-    btn.grid(row=2, sticky=tk.E+tk.W, pady=5)
-    tk.Label(action_bar_1, font=("微軟正黑體", 10, "bold"), textvariable=learned_data).grid(row=3, column=0)
+    btn.grid(row=3, sticky=tk.E+tk.W, pady=5)
+    tk.Label(action_bar_1, font=("微軟正黑體", 10, "bold"), textvariable=learned_data).grid(row=4, column=0)
     
     action_bar_2 = tk.Frame(window)
     action_bar_2.grid(row=1, column=2, padx=25, pady=25, sticky=tk.N)
@@ -201,9 +227,11 @@ def GUI():
 
 basic_word = []
 bonus_word = []
-basic_canvas=[]
-bonus_canvas=[]
+basic_canvas = []
+bonus_canvas = []
+binded_canvas = []
 data_combobox = None
+bonus_combobox = None
 test_canvas = None
 val_canvas = None
 test_data = None
@@ -212,12 +240,12 @@ test_col = 0
 W = None
 B = None
 
-
 window = tk.Tk()
-learned_data = tk.StringVar()#學習率
-window.geometry("720x550")
+window.geometry("720x710")
 window.resizable(False, False)
 window.title("Hopfield")
+learned_data = tk.StringVar()#學習率
 readdata()
 GUI()
+
 window.mainloop()
