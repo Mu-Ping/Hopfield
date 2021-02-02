@@ -1,7 +1,7 @@
 # Hopfield
 ## 程式簡介
 ### 使用說明：
-> 透過視覺化界面展示「Hopfield Network」
+> 透過視覺化界面展示「Hopfield Network」的使用方法
 
 *  <p style="color:red">右方可以選擇訓練資料：「Basic_Training」、「Bonus_Training」</p>
 
