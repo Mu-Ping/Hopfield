@@ -35,8 +35,12 @@
 * W 的學習有很多種方法：**Hebbian rule**、Projection rule...，此處使用前者。
 
 * 輸入、輸出向量都必須是二元值 ( 0、1 ) 或雙極值 ( -1、1 )，但在Hebbian rule的學習法則下，兩者的學習公式會有些微差別：
-  * 二元值 ( 0、1 )： <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = s_{i} * s_{j}">
-  * 雙極值 ( -1、1 )：<img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (s_{i}-1/2) * (s_{j}-1/2)">
+  * 輸入輸出為二元值 ( 0、1 )時，W更新公式： 
+  
+     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = s_{i} * s_{j}">
+  * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ( 4用於取整數，可有可無 )：
+  
+     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (s_{i}-1/2) * (s_{j}-1/2)">
   
 * **神經網路架構圖：**  
   <img src="https://i.imgur.com/AtccqVU.png">  
