@@ -1,4 +1,4 @@
-# Hopfield
+# Hopfield Network
 ## 程式簡介
 ### 使用說明：
 > 透過視覺化界面展示「Hopfield Network」的使用方法
@@ -13,8 +13,6 @@
 
 * 「驗證」後下方會產生Hopfield Network的 ( 聯想 ) 結果
 
-* **神經網路架構圖：**  
-  <img src="https://i.imgur.com/AtccqVU.png">
 ### 範例圖：
 ![](https://i.imgur.com/dN95xtw.jpg)
 
@@ -27,16 +25,24 @@
   
   * 異聯想： 聽到相對論，想到愛因斯坦的名字
   
-* Hopfield是用於「自聯想」型的類神經網路
+* Hopfield 是用於「自聯想」型的類神經網路
 
-* 聯想記憶的表達方式為 <img src="https://render.githubusercontent.com/render/math?math=Y = W X">，目標就是找到適合的 W
+* 聯想記憶的表達方式為 <img src="https://render.githubusercontent.com/render/math?math=Y = W X">，目標就是找到適合的 W，讓 X 聯想( 回想 )起 Y
   * X - 輸入
   * Y - 聯想結果
   * W - 網路鍵結值
   
+* W 的學習有很多種方法：**Hebbian rule**、Projection rule...，此處使用前者。
+
+* 輸入、輸出向量都必須是二元值 ( 0、1 ) 或雙極值 ( -1、1 )，但在Hebbian rule的學習法則下，兩者的學習公式會有些微差別：
+  * 二元值 ( 0、1 )： <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = s_{i} * s_{j}">
+  * 雙極值 ( -1、1 )：<img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (s_{i}-1/2) * (s_{j}-1/2)">
+  
+* **神經網路架構圖：**  
+  <img src="https://i.imgur.com/AtccqVU.png">  
 
 ### 演算法步驟
 > 下述的「學習階段」、「回想階段」之相關數學證明請參考原始Paper
 #### 1. 學習階段
-> W 的學習有很多種方法：Hebbian rule、Projection rule...，此處使用前者
+
 #### 2. 回想階段
