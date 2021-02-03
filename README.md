@@ -28,9 +28,11 @@
 * Hopfield 是用於「自聯想」型的類神經網路
 
 * 聯想記憶的表達方式為 <img src="https://render.githubusercontent.com/render/math?math=Y = W X">，目標就是找到適合的 W，讓 X 聯想( 回想 )起 Y
-  * X - 輸入
-  * Y - 聯想結果
-  * W - 網路鍵結值
+  * X - 輸入，為n x 1的矩陣 
+  
+  * Y - 聯想結果，為n x 1的矩陣 
+  
+  * W - 網路鍵結值，為n x n的矩陣 
   
 * W 的學習有很多種方法：**Hebbian rule**、Projection rule...，此處使用前者。
 
@@ -42,7 +44,7 @@
      
   * 輸入輸出為二元值 ( 0、1 )時，W更新公式 ( 4用於取整數，可有可無 )： 
   
-     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (s_{i}-1/2) * (s_{j}-1/2)">
+     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (s_{i}-{1 \over 2}) * (s_{j}-{1 \over 2})">
      
 
      
@@ -52,10 +54,19 @@
 ### 演算法步驟
 > 下述的「學習階段」、「回想階段」之相關數學證明請參考原始Paper
 #### 1. 學習階段
-<img src="https://render.githubusercontent.com/render/math?math=$$w=\begin{pmatrix}
-  a_{11} & a_{12} & \cdots & a_{1n}\\
-  a_{21} & a_{22} & \cdots & a_{2n}\\
-  \vdots & \vdots & \ddots & \vdots\\
-  a_{m1} & \cdots & \cdots & a_{mn}
-\end{pmatrix}$$">
+參數簡介：
+* N筆輸入向量，每一筆有P個維度
+
+* W為P x P的矩陣，預設為0矩陣(避免正回授
+
+* I為單位矩陣
+
+<img src="https://render.githubusercontent.com/render/math?math=x_i=[x_{i1},...,x_{ip}]"> , <img src="https://render.githubusercontent.com/render/math?math=i=1, 2,...,N">
+
+
+<img src="https://render.githubusercontent.com/render/math?math=W = \begin{bmatrix}w_{11} \quad \dots \quad w_{1p} \\ \vdots \quad \ddots \quad \vdots \\ w_{p1} \quad \dots \quad w_{pp} \end{bmatrix} ={1 \over p} \sum_{k=1}^{N}x_k*{x_k}^T-{N \over p}I">
+
+> 為什麼要減去單位矩陣？為了讓W的對角為0，Hopfield在原始Paper中，神經元並不會連到自己
+
 #### 2. 回想階段
+
