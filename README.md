@@ -14,7 +14,7 @@
 * 「驗證」後下方會產生Hopfield Network的 ( 聯想 ) 結果
 
 ### 範例圖：
-![](https://i.imgur.com/dN95xtw.jpg)
+![](https://i.imgur.com/TbLk2fK.png)
 
 ## Hopfield Network 演算法
 ### 演算法簡介
@@ -34,19 +34,28 @@
   
 * W 的學習有很多種方法：**Hebbian rule**、Projection rule...，此處使用前者。
 
-* 輸入、輸出向量都必須是二元值 ( 0、1 ) 或雙極值 ( -1、1 )，但在Hebbian rule的學習法則下，兩者的學習公式會有些微差別：
-  * 輸入輸出為二元值 ( 0、1 )時，W更新公式： 
+* 輸入、輸出向量都必須是雙極值 ( -1、1 ) 或 二元值 ( 0、1 )，但在Hebbian rule的學習法則下，兩者的學習公式會有些微差別：
+
+  * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ：
   
      <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = s_{i} * s_{j}">
-  * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ( 4用於取整數，可有可無 )：
+     
+  * 輸入輸出為二元值 ( 0、1 )時，W更新公式 ( 4用於取整數，可有可無 )： 
   
      <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (s_{i}-1/2) * (s_{j}-1/2)">
-  
+     
+
+     
 * **神經網路架構圖：**  
   <img src="https://i.imgur.com/AtccqVU.png">  
 
 ### 演算法步驟
 > 下述的「學習階段」、「回想階段」之相關數學證明請參考原始Paper
 #### 1. 學習階段
-
+<img src="https://render.githubusercontent.com/render/math?math=$$w=\begin{pmatrix}
+  a_{11} & a_{12} & \cdots & a_{1n}\\
+  a_{21} & a_{22} & \cdots & a_{2n}\\
+  \vdots & \vdots & \ddots & \vdots\\
+  a_{m1} & \cdots & \cdots & a_{mn}
+\end{pmatrix}$$">
 #### 2. 回想階段
