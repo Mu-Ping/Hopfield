@@ -58,9 +58,9 @@
 此程式採用Hebbian rule學習法中的雙極值 ( -1、1 )輸入輸出，參數簡介：
 * N筆輸入向量，每一筆有P個維度，表示成 x
 
-* W為P x P的矩陣，預設為0矩陣(避免正回授
+* W為P x P的矩陣，預設為0矩陣：避免正回授
 
-* I為單位矩陣
+* I為單位矩陣：除以P是為了簡化參數，可有可無 
 
 <img src="https://render.githubusercontent.com/render/math?math=x_i=[x_{i1},...,x_{ip}]"> , <img src="https://render.githubusercontent.com/render/math?math=i=1, 2,...,N">
 
@@ -80,5 +80,9 @@ W透過上述公式訓練一次後即完成( 只要訓練一次就可以了!! )�
 
   <img src="https://render.githubusercontent.com/render/math?math=\theta_j=\sum_{i=1}^{p}w_{ji}, j=1,...,P">
   
-#### 2. 回想階段
-ㄈ
+#### 2. 回想( 聯想 )階段
+當網路訓練好後就要進入回想階段，假設一個新的輸入X(0)，0表示時間點。運算 X(1) = W * X(0)，產生X(1)，而W * X(0)內的每個值需要經過激勵函數在輸出成X(1)，激勵函數如下( j表示第j個神經元的值 )：
+
+<img src="https://render.githubusercontent.com/render/math?math=x_j(n%2B1) =  sgn(\sum_{i=1}^{p}w_{ji}*x_i(n)-\theta_j) = sgn(u_j(n)-\theta_j) = \left\{\begin{array}{r}1 \quad if \quad u_j(n)-\theta_j > 0 \\x_j(n) \quad if \quad u_j(n)-\theta_j = 0\\-1 \quad if \quad u_j(n)-\theta_j < 0 \end{array} \right.">
+
+整個聯想過程可以寫成： <img src="https://render.githubusercontent.com/render/math?math=x(0) \to \dots \to x(n) \to x(n%2B1)">，而當 <img src="https://render.githubusercontent.com/render/math?math=x(n) = x(n%2B1)">則聯想過程停止，該次的輸出就是最終的聯想結果。
