@@ -39,7 +39,7 @@
 * 輸入、輸出向量都必須是雙極值 ( -1、1 ) 或 二元值 ( 0、1 )，但在Hebbian rule的學習法則下，兩者的學習公式會有些微差別：
   > w 表示第 j 到第 i 個神經元的鍵結值，x 表示輸入資料的第 i 維或第 j 維
 
-  * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ，：
+  * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ：
   
      <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = x_{i} * x_{j}">
      
