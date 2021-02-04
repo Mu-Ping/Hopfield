@@ -85,7 +85,8 @@ W透過上述公式訓練一次就完成了!! 。另外此處與簡介倒數第�
 
 <img src="https://render.githubusercontent.com/render/math?math=x_j(n%2B1) =  sgn(\sum_{i=1}^{p}w_{ji}*x_i(n)-\theta_j) = sgn(u_j(n)-\theta_j) = \left\{\begin{array}{r}1 \quad if \quad u_j(n)-\theta_j > 0 \\x_j(n) \quad if \quad u_j(n)-\theta_j = 0\\-1 \quad if \quad u_j(n)-\theta_j < 0 \end{array} \right.">
 
-整個聯想過程可以寫成： <img src="https://render.githubusercontent.com/render/math?math=x(0) \to \dots \to x(n) \to x(n%2B1)">，而當 <img src="https://render.githubusercontent.com/render/math?math=x(n) = x(n%2B1)">則聯想過程停止，該次的輸出就是最終的聯想結果。
+整個聯想過程可以寫成： <img src="https://render.githubusercontent.com/render/math?math=x(0) \to \dots \to x(n) \to x(n%2B1)">
+而當 <img src="https://render.githubusercontent.com/render/math?math=x(n) = x(n%2B1)">則聯想過程停止。
 > 回想又分兩種方法：「同步回想」、「異步回想」，此程式採用同步，即一般的矩陣相乘。
 
 > 有興趣可參考國立聯合大學-陳士杰老師的講義，附件中的「Hopfield intro」pdf
