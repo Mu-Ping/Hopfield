@@ -34,17 +34,18 @@
   
   * W - 網路鍵結值，為n x n的矩陣 
   
-* W 的學習有很多種方法：**Hebbian rule**、Projection rule...，此處使用前者。
+* W 的學習有很多種方法：**Hebbian rule**、Projection rule...。
 
 * 輸入、輸出向量都必須是雙極值 ( -1、1 ) 或 二元值 ( 0、1 )，但在Hebbian rule的學習法則下，兩者的學習公式會有些微差別：
+  > w 表示第 j 到第 i 個神經元的鍵結值，x 表示資料的第 i 維或第 j 維
 
-  * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ：
+  * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ，：
   
-     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = s_{i} * s_{j}">
+     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = x_{i} * x_{j}">
      
   * 輸入輸出為二元值 ( 0、1 )時，W更新公式 ( 4用於取整數，可有可無 )： 
   
-     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (s_{i}-{1 \over 2}) * (s_{j}-{1 \over 2})">
+     <img src="https://render.githubusercontent.com/render/math?math=\Delta w_{ij} = 4 (x_{i}-{1 \over 2}) * (x_{j}-{1 \over 2})">
      
 
      
@@ -54,8 +55,8 @@
 ### 演算法步驟
 > 下述的「學習階段」、「回想階段」之相關數學證明請參考原始Paper
 #### 1. 學習階段
-參數簡介：
-* N筆輸入向量，每一筆有P個維度
+此程式採用Hebbian rule學習法中的雙極值 ( -1、1 )輸入輸出，參數簡介：
+* N筆輸入向量，每一筆有P個維度，表示成 x
 
 * W為P x P的矩陣，預設為0矩陣(避免正回授
 
@@ -65,6 +66,8 @@
 
 
 <img src="https://render.githubusercontent.com/render/math?math=W = \begin{bmatrix}w_{11} \quad \dots \quad w_{1p} \\ \vdots \quad \ddots \quad \vdots \\ w_{p1} \quad \dots \quad w_{pp} \end{bmatrix} ={1 \over p} \sum_{k=1}^{N}x_k*{x_k}^T-{N \over p}I">
+
+W透過上述公式訓練一次後即完成( 只要訓練一次就可以了!! )。另外此處與簡介最後一點所提的公式是一樣的，上述表達是單個鍵結值的單次更新，可以透過矩陣與sigma來表示全部資料的更新。此處很不好理解，必須用一點想像力，如果有疑問可以來信詢問。
 
 > 為什麼要減去單位矩陣？為了讓W的對角為0，Hopfield在原始Paper中，神經元並不會連到自己
 
