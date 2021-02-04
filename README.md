@@ -37,7 +37,7 @@
 * W 的學習有很多種方法：**Hebbian rule**、Projection rule...。
 
 * 輸入、輸出向量都必須是雙極值 ( -1、1 ) 或 二元值 ( 0、1 )，但在Hebbian rule的學習法則下，兩者的學習公式會有些微差別：
-  > w 表示第 j 到第 i 個神經元的鍵結值，x 表示資料的第 i 維或第 j 維
+  > w 表示第 j 到第 i 個神經元的鍵結值，x 表示輸入資料的第 i 維或第 j 維
 
   * 輸入輸出為雙極值 ( -1、1 )，W更新公式 ，：
   
@@ -67,7 +67,7 @@
 
 <img src="https://render.githubusercontent.com/render/math?math=W = \begin{bmatrix}w_{11} \quad \dots \quad w_{1p} \\ \vdots \quad \ddots \quad \vdots \\ w_{p1} \quad \dots \quad w_{pp} \end{bmatrix} ={1 \over p} \sum_{k=1}^{N}x_k*{x_k}^T-{N \over p}I">
 
-W透過上述公式訓練一次後即完成( 只要訓練一次就可以了!! )。另外此處與簡介倒數第二點所提的公式是一樣的，倒數第二點表達的是單個鍵結值的單次更新，可以透過矩陣與sigma來表示全部資料的更新。此處很不好理解，必須用一點想像力，如果有疑問可以來信詢問。
+W透過上述公式訓練一次就完成了!! 。另外此處與簡介倒數第二點所提的公式是一樣的，倒數第二點表達的是單個鍵結值的單次更新，可以透過矩陣與sigma來表示全部資料的更新。此處很不好理解，必須用一點想像力，如果有疑問可以來信詢問。
 
 > 為什麼要減去單位矩陣？為了讓W的對角為0，Hopfield在原始Paper中，神經元並不會連到自己
 
@@ -86,3 +86,7 @@ W透過上述公式訓練一次後即完成( 只要訓練一次就可以了!! )�
 <img src="https://render.githubusercontent.com/render/math?math=x_j(n%2B1) =  sgn(\sum_{i=1}^{p}w_{ji}*x_i(n)-\theta_j) = sgn(u_j(n)-\theta_j) = \left\{\begin{array}{r}1 \quad if \quad u_j(n)-\theta_j > 0 \\x_j(n) \quad if \quad u_j(n)-\theta_j = 0\\-1 \quad if \quad u_j(n)-\theta_j < 0 \end{array} \right.">
 
 整個聯想過程可以寫成： <img src="https://render.githubusercontent.com/render/math?math=x(0) \to \dots \to x(n) \to x(n%2B1)">，而當 <img src="https://render.githubusercontent.com/render/math?math=x(n) = x(n%2B1)">則聯想過程停止，該次的輸出就是最終的聯想結果。
+> 另外在回想時有分兩種方法：「同步回想」、「異步回想」，此程式採用同步回想，即一般的矩陣相乘。若有興趣請參考附件ppt
+
+@author： [Mu-Ping](https://github.com/Mu-Ping)  
+@e-mail： k0326jim@gmail.com
