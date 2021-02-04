@@ -32,7 +32,7 @@
   
   * Y - 聯想結果，為n x 1的矩陣 
   
-  * W - 網路鍵結值，為n x n的矩陣 
+  * W - 網路鍵結值，為n x n的「對稱」矩陣
   
 * W 的學習有很多種方法：**Hebbian rule**、Projection rule...。
 
@@ -67,9 +67,18 @@
 
 <img src="https://render.githubusercontent.com/render/math?math=W = \begin{bmatrix}w_{11} \quad \dots \quad w_{1p} \\ \vdots \quad \ddots \quad \vdots \\ w_{p1} \quad \dots \quad w_{pp} \end{bmatrix} ={1 \over p} \sum_{k=1}^{N}x_k*{x_k}^T-{N \over p}I">
 
-W透過上述公式訓練一次後即完成( 只要訓練一次就可以了!! )。另外此處與簡介最後一點所提的公式是一樣的，上述表達是單個鍵結值的單次更新，可以透過矩陣與sigma來表示全部資料的更新。此處很不好理解，必須用一點想像力，如果有疑問可以來信詢問。
+W透過上述公式訓練一次後即完成( 只要訓練一次就可以了!! )。另外此處與簡介倒數第二點所提的公式是一樣的，倒數第二點表達的是單個鍵結值的單次更新，可以透過矩陣與sigma來表示全部資料的更新。此處很不好理解，必須用一點想像力，如果有疑問可以來信詢問。
 
 > 為什麼要減去單位矩陣？為了讓W的對角為0，Hopfield在原始Paper中，神經元並不會連到自己
 
-#### 2. 回想階段
+至於每個神經元的閥值有兩種設定方法( θ表示閥值；j表示第j個神經元 )：
+* 全部神經元皆設定為0
 
+  <img src="https://render.githubusercontent.com/render/math?math=\theta_j=0, j=1,...,P">
+  
+* 該神經元的閥值設為該神經元連接到其他神經元的鍵結值總和
+
+  <img src="https://render.githubusercontent.com/render/math?math=\theta_j=\sum_{i=1}^{p}w_{ji}, j=1,...,P">
+  
+#### 2. 回想階段
+ㄈ
