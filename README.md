@@ -1,7 +1,7 @@
 # Hopfield Network
 ## 程式簡介
 ### 使用說明：
-> 透過視覺化界面展示「Hopfield Network」的使用方法
+> 透過視覺化界面展示「離散型Hopfield Network」的使用方法
 
 *  <p style="color:red">右方可以選擇訓練資料：「Basic_Training」、「Bonus_Training」</p>
 
@@ -19,13 +19,14 @@
 ## Hopfield Network 演算法
 ### 演算法簡介
 > 應用於各方面的一種「聯想式學習」演算法
-* 模擬人類記憶中聯想的神經網路，又分為「自聯想」、「異聯想」
+* 模擬人類記憶中聯想的神經網路，又分為「自聯想」、「異聯想」，Hopfield又屬自聯想
 
   * 自聯想： 看到模糊不清的照片，依然能辨別出原來的風貌
   
   * 異聯想： 聽到相對論，想到愛因斯坦的名字
-  
-* Hopfield 是用於「自聯想」型的類神經網路，存在**記憶上限**
+
+* 離散Hopfield網路的記憶容量有上限，假設神經元數目p，在記憶提取99%正確率的情況下，可儲存的資料筆數不超過
+  * 記憶容量<= p/4lnp
 
 * 聯想記憶的表達方式為 <img src="https://render.githubusercontent.com/render/math?math=Y = W X">，目標就是找到適合的 W，讓 X 聯想( 回想 )起 Y
   * X - 輸入，為n x 1的矩陣 
