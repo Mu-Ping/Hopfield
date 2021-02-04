@@ -25,7 +25,7 @@
   
   * 異聯想： 聽到相對論，想到愛因斯坦的名字
   
-* Hopfield 是用於「自聯想」型的類神經網路
+* Hopfield 是用於「自聯想」型的類神經網路，存在**記憶上限**
 
 * 聯想記憶的表達方式為 <img src="https://render.githubusercontent.com/render/math?math=Y = W X">，目標就是找到適合的 W，讓 X 聯想( 回想 )起 Y
   * X - 輸入，為n x 1的矩陣 
@@ -76,7 +76,7 @@ W透過上述公式訓練一次就完成了!! 。另外此處與簡介倒數第�
 
   <img src="https://render.githubusercontent.com/render/math?math=\theta_j=0, j=1,...,P">
   
-* 該神經元的閥值設為該神經元連接到其他神經元的鍵結值總和
+* j 神經元的閥值設為其他神經元連接到 j 神經元的鍵結值總和
 
   <img src="https://render.githubusercontent.com/render/math?math=\theta_j=\sum_{i=1}^{p}w_{ji}, j=1,...,P">
   
