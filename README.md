@@ -25,8 +25,9 @@
   
   * 異聯想： 聽到相對論，想到愛因斯坦的名字
 
-* 離散Hopfield網路的記憶容量有上限，假設神經元數目p，在記憶提取99%正確率的情況下，可儲存的資料筆數不超過
-  * 記憶容量<= p/4lnp
+* 離散Hopfield網路有記憶上限，假設神經元數目p，在記憶提取99%正確率的情況下，可儲存的資料筆數不超過
+
+     <img src="https://render.githubusercontent.com/render/math?math={Memory \quad capacity \quad \le \quad p \over {4lnp}}">
 
 * 聯想記憶的表達方式為 <img src="https://render.githubusercontent.com/render/math?math=Y = W X">，目標就是找到適合的 W，讓 X 聯想( 回想 )起 Y
   * X - 輸入，為n x 1的矩陣 
