@@ -3,7 +3,7 @@
 ### 使用說明：
 > 透過視覺化界面展示「離散型Hopfield Network」的使用方法
 
-*  <p style="color:red">右方可以選擇訓練資料：「Basic_Training」、「Bonus_Training」</p>
+*  右方可以選擇訓練資料：「Basic_Training」、「Bonus_Training
 
 *  所有資料皆以3張圖為一組，且「Bonus_Training」可以再細選子訓練集：「Bonus-x」
 
