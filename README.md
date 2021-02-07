@@ -66,10 +66,11 @@
 
 <img src="https://render.githubusercontent.com/render/math?math=x_i=[x_{i1},...,x_{ip}]"> , <img src="https://render.githubusercontent.com/render/math?math=i=1, 2,...,N">
 
+W 即透過下式來學習：
 
 <img src="https://render.githubusercontent.com/render/math?math=W = \begin{bmatrix}w_{11} \quad \dots \quad w_{1p} \\ \vdots \quad \ddots \quad \vdots \\ w_{p1} \quad \dots \quad w_{pp} \end{bmatrix} ={1 \over p} \sum_{k=1}^{N}x_k*{x_k}^T-{N \over p}I">
 
-W透過上述公式訓練一次就完成了!! 。另外此處與簡介倒數第二點所提的公式是一樣的，倒數第二點表達的是單個鍵結值的單次更新，可以透過矩陣與sigma來表示全部資料的更新。此處很不好理解，必須用一點想像力，如果有疑問可以來信詢問。
+W訓練一次就完成了!! 。另外此處與簡介倒數第二點所提的公式是一樣的，倒數第二點表達的是單個鍵結值的單次更新，可以透過矩陣與sigma來表示全部資料的更新。此處很不好理解，必須用一點想像力，如果有疑問可以來信詢問。
 
 > 為什麼要減去單位矩陣？為了讓W的對角為0，Hopfield在原始Paper中，神經元並不會連到自己
 
